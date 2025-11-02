@@ -4,7 +4,7 @@
 ![Python](https://img.shields.io/badge/Python-3.13.9-green?logo=python&style=plastic)
 ![Tkinter](https://img.shields.io/badge/Tkinter-8.6-orange?style=plastic)
 ![Pygame](https://img.shields.io/badge/Pygame-2.6.1-blue?style=plastic)  
-![Release](https://img.shields.io/github/v/release/T4NkYF3R/Des-images-qui-ecoutent?style=plastic)
+![Release](https://img.shields.io/github/v/release/T4NkYF3R/Des-images-qui-ecoutent?include_prereleases&display_name=tag&logo=github&color=red&style=plastic)
 ![Contact](https://img.shields.io/badge/Github-@T4NkYF3R-black?logo=github&logoColor=white&style=plastic)
 ![Email](https://img.shields.io/badge/Email-contact-yellow?logo=gmail&logoColor=white&style=plastic)
 
