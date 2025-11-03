@@ -1,4 +1,5 @@
 import tkinter
+from pathlib import Path
 
 from app import Data
 from app.window import Window, WINDOW_COLOR
@@ -136,7 +137,7 @@ class ResponseFrame(BaseFrame):
     def _save_button_clicked(self) -> None:
         if self._value_selected is None: return
 
-        self._data.save_response(music=self._window.getCurrentMusic(), score=self._value_selected, stimulus="")
+        self._data.save_response(music=Path(self._window.getCurrentMusic()).name, score=self._value_selected, stimulus="Undefined")
         self._value_selected = None
         for i, button in enumerate(self._buttons):
             button.configure(background=COLOR[i], foreground="black")
