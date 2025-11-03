@@ -142,12 +142,11 @@ class ResponseFrame(BaseFrame):
             button.configure(background=COLOR[i], foreground="black")
         self._valueSaved += 1
 
-        if self._valueSaved == 4:
-            self._valueSaved = 0
+        if self._valueSaved % 4 == 0:
             self._window.setSession(value=-self._window.getSession())
             self._window.hide_frame("image")
             self._window.hide_frame("response")
-            if self._window.getSession() == 1:
+            if -self._window.getSession() < 2:
                 self._window.show_frame("start")
             else:
                 self._window.show_frame("end")
@@ -177,6 +176,34 @@ class ImageFrame(BaseFrame):
 class EndFrame(BaseFrame):
     def __init__(self, window: Window) -> None:
         super().__init__(window)
+        self._create_end_label()
+        self._create_end_sutton()
+
+        self.place(x=self._window.width, y=self._window.height)
+        self.update()
+        self._width = self.winfo_width()
+        self._height = self.winfo_height()
+        self.place_forget()
+        self.placeX = (self._window.width - self._width) / 2
+        self.placeY = (self._window.height - self._height) / 2
+
+    def _end_session(self) -> None:
+        self._window.close_window()
+
+    def _create_end_sutton(self) -> None:
+        button = self.create_button(
+            text="Quitter",
+            color="white",
+            width=None,
+            height=None,
+            command=self._end_session
+        )
+        button.grid(row=1, column=0)
+        return button
+
+    def _create_end_label(self) -> None:
+        self._label = self.create_label(text="Fin de l'expérience")
+        self._label.grid(row=0, column=0)
 
 
 FRAME_LIST = {

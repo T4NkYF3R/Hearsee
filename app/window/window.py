@@ -17,7 +17,7 @@ class Window(tkinter.Tk):
         self.title(string=titleWindow)
         self.attributes("-fullscreen", True)
         self.configure(background=WINDOW_COLOR)
-        self.bind("<Escape>", func=self._close_window)
+        self.bind("<Escape>", func=self.close_window)
         self.width = 1920
         self.height = 1080
 
@@ -28,7 +28,7 @@ class Window(tkinter.Tk):
         self._musicPlayer = Music(self)
         self._musicThread = Thread(target=self._musicPlayer.run, daemon=True)
 
-    def _close_window(self, event=None) -> None:
+    def close_window(self, event=None) -> None:
         self.destroy()
 
     def _start_music_thread(self) -> None:
