@@ -3,7 +3,7 @@ import random
 from time import sleep
 
 from app import MUSIC
-from app.window import Window
+from app.window import Window, NB_SECONDS
 
 NB_MS = 100
 SECOND_IN_MS = 60000
@@ -13,6 +13,7 @@ class Music:
     def __init__(self, window: Window) -> None:
         self._window = window
         pygame.mixer.init()
+        self._running = True
         self._currentTrack = None
         self._musics = self._loadMusics()
         self._session = 0
@@ -46,20 +47,34 @@ class Music:
     def _stop(self) -> None:
         pygame.mixer.music.stop()
 
+    def stop(self) -> None:
+        self._running = False
+        pygame.mixer.music.stop()
+        pygame.mixer.quit()
+
     def getMusicLoaded(self) -> str | None:
         return self._currentTrack
 
-    def run(self) -> None:
-        self._session = self._window.getSession()
-        self._load(session=self._session)
-        self._play()
-        sleep(30)
-        while True:
+    def _check_session_change(self) -> None:
+        while self._running:
             session = self._window.getSession()
-            if self._session != session:
+            if session < 0:
+                self._stop()
+                if session < -2:
+                    return
+            elif self._session != session:
                 self._session = session
                 break
             sleep(SLEEP_TIME)
+
+    def run(self) -> None:
+        self._session = self._window.getSession()
+        self._check_session_change()
+        self._load(session=self._session)
+        self._play()
+        sleep(NB_SECONDS)
+        self._check_session_change()
         self._stop()
         self._load(session=self._session)
         self._play()
+        self._check_session_change()

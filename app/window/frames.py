@@ -1,4 +1,5 @@
 import tkinter
+from pathlib import Path
 
 from app import Data
 from app.window import Window, WINDOW_COLOR
@@ -10,11 +11,15 @@ COLOR = ["#FF0000", "#FF3300", "#FF6600", "#FF9900", "#FFCC00", "#FFFF00", "#CCF
 ACTIVE_BG_COLOR = "black"
 ACTIVE_FG_COLOR = "white"
 
+NB_SECONDS = 1
+TO_MS = 1000
+AFTER_TIME = NB_SECONDS * TO_MS
+
 
 class BaseFrame(tkinter.Frame):
     def __init__(self, window: Window) -> None:
         super().__init__(window, bg=WINDOW_COLOR)
-        self._parent = window
+        self._window = window
         self._width = 0
         self._height = 0
         self.placeX: float = 0
@@ -43,6 +48,44 @@ class BaseFrame(tkinter.Frame):
         )
 
 
+class StartFrame(BaseFrame):
+    def __init__(self, window: Window) -> None:
+        super().__init__(window)
+        self._label = None
+        self._create_session_label()
+        self._create_start_sutton()
+
+        self.place(x=self._window.width, y=self._window.height)
+        self.update()
+        self._width = self.winfo_width()
+        self._height = self.winfo_height()
+        self.place_forget()
+        self.placeX = (self._window.width - self._width) / 2
+        self.placeY = (self._window.height - self._height) / 2
+
+    def _start_session(self) -> None:
+        self._window.setSession(value=-self._window.getSession() + 1)
+        self._label.configure(text="Session " + str(self._window.getSession() + 1))
+        self._window.hide_frame("start")
+        self._window.after(ms=AFTER_TIME, func=lambda: self._window.show_frame("image"))
+        self._window.after(ms=AFTER_TIME, func=lambda: self._window.show_frame("response"))
+
+    def _create_start_sutton(self) -> None:
+        button = self.create_button(
+            text="Commencer",
+            color="white",
+            width=None,
+            height=None,
+            command=self._start_session
+        )
+        button.grid(row=1, column=0)
+        return button
+
+    def _create_session_label(self) -> None:
+        self._label = self.create_label(text="Session " + str(self._window.getSession() + 1))
+        self._label.grid(row=0, column=0)
+
+
 class ResponseFrame(BaseFrame):
     def __init__(self, window: Window) -> None:
         super().__init__(window=window)
@@ -50,17 +93,18 @@ class ResponseFrame(BaseFrame):
         self._data = Data()
 
         self._value_selected: int | None = None
+        self._valueSaved = 0
         self._buttons: list[tkinter.Button] = self._create_response_buttons()
         self._create_response_labels()
         self._create_save_button()
 
-        self.place(x=self._parent.width, y=self._parent.height)
+        self.place(x=self._window.width, y=self._window.height)
         self.update()
         self._width = self.winfo_width()
         self._height = self.winfo_height()
         self.place_forget()
-        self.placeX = (self._parent.width - self._width) / 2
-        self.placeY = self._parent.height - self._height - PADY
+        self.placeX = (self._window.width - self._width) / 2
+        self.placeY = self._window.height - self._height - PADY
 
     def _response_button_clicked(self, value: int) -> None:
         for i, button in enumerate(self._buttons):
@@ -93,16 +137,20 @@ class ResponseFrame(BaseFrame):
     def _save_button_clicked(self) -> None:
         if self._value_selected is None: return
 
-        self._data.save_response(music=self._parent.getCurrentMusic(), score=self._value_selected, stimulus="")
+        self._data.save_response(music=Path(self._window.getCurrentMusic()).name, score=self._value_selected, stimulus="Undefined")
         self._value_selected = None
         for i, button in enumerate(self._buttons):
             button.configure(background=COLOR[i], foreground="black")
-        self._parent.setSavedResponses(self._parent.getSavedResponses() + 1)
+        self._valueSaved += 1
 
-        if self._parent.getSavedResponses() == 4:
-            self._parent.setSavedResponses(0)
-            self._parent.hide_frame("image")
-            self._parent.hide_frame("response")
+        if self._valueSaved % 4 == 0:
+            self._window.setSession(value=-self._window.getSession())
+            self._window.hide_frame("image")
+            self._window.hide_frame("response")
+            if -self._window.getSession() < 2:
+                self._window.show_frame("start")
+            else:
+                self._window.show_frame("end")
 
     def _create_save_button(self) -> None:
         button: tkinter.Button = self.create_button(
@@ -119,14 +167,49 @@ class ImageFrame(BaseFrame):
     def __init__(self, window: Window) -> None:
         super().__init__(window=window)
 
-        self.place(x=self._parent.width, y=self._parent.height)
+        self.place(x=self._window.width, y=self._window.height)
         self.update()
         self._width = self.winfo_width()
         self._height = self.winfo_height()
         self.place_forget()
 
 
+class EndFrame(BaseFrame):
+    def __init__(self, window: Window) -> None:
+        super().__init__(window)
+        self._create_end_label()
+        self._create_end_sutton()
+
+        self.place(x=self._window.width, y=self._window.height)
+        self.update()
+        self._width = self.winfo_width()
+        self._height = self.winfo_height()
+        self.place_forget()
+        self.placeX = (self._window.width - self._width) / 2
+        self.placeY = (self._window.height - self._height) / 2
+
+    def _end_session(self) -> None:
+        self._window.stop()
+
+    def _create_end_sutton(self) -> None:
+        button = self.create_button(
+            text="Quitter",
+            color="white",
+            width=None,
+            height=None,
+            command=self._end_session
+        )
+        button.grid(row=1, column=0)
+        return button
+
+    def _create_end_label(self) -> None:
+        self._label = self.create_label(text="Fin de l'expérience")
+        self._label.grid(row=0, column=0)
+
+
 FRAME_LIST = {
+    "start": StartFrame,
     "response": ResponseFrame,
-    "image": ImageFrame
+    "image": ImageFrame,
+    "end": EndFrame
 }
