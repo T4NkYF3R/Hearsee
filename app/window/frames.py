@@ -59,12 +59,11 @@ class StartFrame(BaseFrame):
         self.placeY = (self._window.height - self._height) / 2
 
     def _start_session(self) -> None:
+        self._window.setSession(value=self._window.getSession() + 1)
         self._label.configure(text="Session " + str(self._window.getSession() + 1))
         self._window.hide_frame("start")
-        self._window.after(ms=1 * 1000, func=self._window.start_music_thread())
-        self._window.after(ms=31 * 1000, func=self._window.show_frame("image"))
-        self._window.after(ms=31 * 1000, func=self._window.show_frame("response"))
-        return
+        self._window.after(ms=30 * 1000, func=lambda: self._window.show_frame("image"))
+        self._window.after(ms=30 * 1000, func=lambda: self._window.show_frame("response"))
 
     def _create_start_sutton(self) -> None:
         button = self.create_button(
@@ -78,7 +77,7 @@ class StartFrame(BaseFrame):
         return button
 
     def _create_session_label(self) -> None:
-        self._label = self.create_label(text="Session " + str(self._window.getSession()))
+        self._label = self.create_label(text="Session " + str(self._window.getSession() + 1))
         self._label.grid(row=0, column=0)
 
 

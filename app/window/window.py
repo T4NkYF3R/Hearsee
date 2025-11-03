@@ -22,7 +22,7 @@ class Window(tkinter.Tk):
         self.height = 1080
 
         self._frames = {}
-        self._session = 1
+        self._session = 0
         self._savedResponse = 0
 
         from app.assets import Music
@@ -30,9 +30,10 @@ class Window(tkinter.Tk):
         self._musicThread = Thread(target=self._musicPlayer.run, daemon=True)
 
     def _close_window(self, event=None) -> None:
+        print(event)
         self.destroy()
 
-    def start_music_thread(self) -> None:
+    def _start_music_thread(self) -> None:
         self._musicThread.start()
 
     def add_frame(self, name: str, frameClass):
@@ -49,6 +50,9 @@ class Window(tkinter.Tk):
         frame.place_forget()
         self.update()
 
+    def setSession(self, value: int) -> None:
+        self._session = value
+
     def getSession(self) -> int:
         return self._session
 
@@ -62,5 +66,6 @@ class Window(tkinter.Tk):
         return self._musicPlayer.getMusicLoaded()
 
     def run(self) -> None:
+        self._start_music_thread()
         self.show_frame("start")
         self.mainloop()

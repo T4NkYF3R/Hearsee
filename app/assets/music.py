@@ -49,17 +49,21 @@ class Music:
     def getMusicLoaded(self) -> str | None:
         return self._currentTrack
 
-    def run(self) -> None:
-        self._session = self._window.getSession()
-        self._load(session=self._session)
-        self._play()
-        sleep(30)
+    def _check_session_change(self) -> None:
         while True:
             session = self._window.getSession()
             if self._session != session:
                 self._session = session
                 break
             sleep(SLEEP_TIME)
+
+    def run(self) -> None:
+        self._session = self._window.getSession()
+        self._check_session_change()
+        self._load(session=self._session)
+        self._play()
+        sleep(30)
+        self._check_session_change()
         self._stop()
         self._load(session=self._session)
         self._play()
