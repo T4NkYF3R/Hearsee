@@ -14,7 +14,7 @@ ACTIVE_FG_COLOR = "white"
 class BaseFrame(tkinter.Frame):
     def __init__(self, window: Window) -> None:
         super().__init__(window, bg=WINDOW_COLOR)
-        self._parent = window
+        self._window = window
         self._width = 0
         self._height = 0
         self.placeX: float = 0
@@ -54,13 +54,13 @@ class ResponseFrame(BaseFrame):
         self._create_response_labels()
         self._create_save_button()
 
-        self.place(x=self._parent.width, y=self._parent.height)
+        self.place(x=self._window.width, y=self._window.height)
         self.update()
         self._width = self.winfo_width()
         self._height = self.winfo_height()
         self.place_forget()
-        self.placeX = (self._parent.width - self._width) / 2
-        self.placeY = self._parent.height - self._height - PADY
+        self.placeX = (self._window.width - self._width) / 2
+        self.placeY = self._window.height - self._height - PADY
 
     def _response_button_clicked(self, value: int) -> None:
         for i, button in enumerate(self._buttons):
@@ -93,16 +93,16 @@ class ResponseFrame(BaseFrame):
     def _save_button_clicked(self) -> None:
         if self._value_selected is None: return
 
-        self._data.save_response(music=self._parent.getCurrentMusic(), score=self._value_selected, stimulus="")
+        self._data.save_response(music=self._window.getCurrentMusic(), score=self._value_selected, stimulus="")
         self._value_selected = None
         for i, button in enumerate(self._buttons):
             button.configure(background=COLOR[i], foreground="black")
-        self._parent.setSavedResponses(self._parent.getSavedResponses() + 1)
+        self._window.setSavedResponses(self._window.getSavedResponses() + 1)
 
-        if self._parent.getSavedResponses() == 4:
-            self._parent.setSavedResponses(0)
-            self._parent.hide_frame("image")
-            self._parent.hide_frame("response")
+        if self._window.getSavedResponses() == 4:
+            self._window.setSavedResponses(0)
+            self._window.hide_frame("image")
+            self._window.hide_frame("response")
 
     def _create_save_button(self) -> None:
         button: tkinter.Button = self.create_button(
@@ -119,7 +119,7 @@ class ImageFrame(BaseFrame):
     def __init__(self, window: Window) -> None:
         super().__init__(window=window)
 
-        self.place(x=self._parent.width, y=self._parent.height)
+        self.place(x=self._window.width, y=self._window.height)
         self.update()
         self._width = self.winfo_width()
         self._height = self.winfo_height()
