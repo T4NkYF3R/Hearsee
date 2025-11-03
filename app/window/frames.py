@@ -43,6 +43,45 @@ class BaseFrame(tkinter.Frame):
         )
 
 
+class StartFrame(BaseFrame):
+    def __init__(self, window: Window) -> None:
+        super().__init__(window)
+        self._label = None
+        self._create_session_label()
+        self._create_start_sutton()
+
+        self.place(x=self._window.width, y=self._window.height)
+        self.update()
+        self._width = self.winfo_width()
+        self._height = self.winfo_height()
+        self.place_forget()
+        self.placeX = (self._window.width - self._width) / 2
+        self.placeY = (self._window.height - self._height) / 2
+
+    def _start_session(self) -> None:
+        self._label.configure(text="Session " + str(self._window.getSession() + 1))
+        self._window.hide_frame("start")
+        self._window.after(ms=1 * 1000, func=self._window.start_music_thread())
+        self._window.after(ms=31 * 1000, func=self._window.show_frame("image"))
+        self._window.after(ms=31 * 1000, func=self._window.show_frame("response"))
+        return
+
+    def _create_start_sutton(self) -> None:
+        button = self.create_button(
+            text="Commencer",
+            color="white",
+            width=None,
+            height=None,
+            command=self._start_session
+        )
+        button.grid(row=1, column=0)
+        return button
+
+    def _create_session_label(self) -> None:
+        self._label = self.create_label(text="Session " + str(self._window.getSession()))
+        self._label.grid(row=0, column=0)
+
+
 class ResponseFrame(BaseFrame):
     def __init__(self, window: Window) -> None:
         super().__init__(window=window)
@@ -127,6 +166,7 @@ class ImageFrame(BaseFrame):
 
 
 FRAME_LIST = {
+    "start": StartFrame,
     "response": ResponseFrame,
     "image": ImageFrame
 }

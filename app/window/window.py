@@ -32,6 +32,9 @@ class Window(tkinter.Tk):
     def _close_window(self, event=None) -> None:
         self.destroy()
 
+    def start_music_thread(self) -> None:
+        self._musicThread.start()
+
     def add_frame(self, name: str, frameClass):
         self._frames[name] = frameClass(self)
 
@@ -44,6 +47,7 @@ class Window(tkinter.Tk):
         from app.window import BaseFrame
         frame: BaseFrame = self._frames[name]
         frame.place_forget()
+        self.update()
 
     def getSession(self) -> int:
         return self._session
@@ -58,7 +62,5 @@ class Window(tkinter.Tk):
         return self._musicPlayer.getMusicLoaded()
 
     def run(self) -> None:
-        self._musicThread.start()
-        self.after(ms=2 * 1000, func=lambda: self.show_frame("image"))
-        self.after(ms=2 * 1000, func=lambda: self.show_frame("response"))
+        self.show_frame("start")
         self.mainloop()
