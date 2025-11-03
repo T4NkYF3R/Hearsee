@@ -10,6 +10,10 @@ COLOR = ["#FF0000", "#FF3300", "#FF6600", "#FF9900", "#FFCC00", "#FFFF00", "#CCF
 ACTIVE_BG_COLOR = "black"
 ACTIVE_FG_COLOR = "white"
 
+NB_SECONDS = 1
+TO_MS = 1000
+AFTER_TIME = NB_SECONDS * TO_MS
+
 
 class BaseFrame(tkinter.Frame):
     def __init__(self, window: Window) -> None:
@@ -59,11 +63,11 @@ class StartFrame(BaseFrame):
         self.placeY = (self._window.height - self._height) / 2
 
     def _start_session(self) -> None:
-        self._window.setSession(value=self._window.getSession() + 1)
+        self._window.setSession(value=-self._window.getSession() + 1)
         self._label.configure(text="Session " + str(self._window.getSession() + 1))
         self._window.hide_frame("start")
-        self._window.after(ms=30 * 1000, func=lambda: self._window.show_frame("image"))
-        self._window.after(ms=30 * 1000, func=lambda: self._window.show_frame("response"))
+        self._window.after(ms=AFTER_TIME, func=lambda: self._window.show_frame("image"))
+        self._window.after(ms=AFTER_TIME, func=lambda: self._window.show_frame("response"))
 
     def _create_start_sutton(self) -> None:
         button = self.create_button(
@@ -88,6 +92,7 @@ class ResponseFrame(BaseFrame):
         self._data = Data()
 
         self._value_selected: int | None = None
+        self._valueSaved = 0
         self._buttons: list[tkinter.Button] = self._create_response_buttons()
         self._create_response_labels()
         self._create_save_button()
@@ -135,12 +140,17 @@ class ResponseFrame(BaseFrame):
         self._value_selected = None
         for i, button in enumerate(self._buttons):
             button.configure(background=COLOR[i], foreground="black")
-        self._window.setSavedResponses(self._window.getSavedResponses() + 1)
+        self._valueSaved += 1
 
-        if self._window.getSavedResponses() == 4:
-            self._window.setSavedResponses(0)
+        if self._valueSaved == 4:
+            self._valueSaved = 0
+            self._window.setSession(value=-self._window.getSession())
             self._window.hide_frame("image")
             self._window.hide_frame("response")
+            if self._window.getSession() == 1:
+                self._window.show_frame("start")
+            else:
+                self._window.show_frame("end")
 
     def _create_save_button(self) -> None:
         button: tkinter.Button = self.create_button(
@@ -164,8 +174,14 @@ class ImageFrame(BaseFrame):
         self.place_forget()
 
 
+class EndFrame(BaseFrame):
+    def __init__(self, window: Window) -> None:
+        super().__init__(window)
+
+
 FRAME_LIST = {
     "start": StartFrame,
     "response": ResponseFrame,
-    "image": ImageFrame
+    "image": ImageFrame,
+    "end": EndFrame
 }

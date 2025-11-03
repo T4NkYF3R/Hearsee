@@ -3,7 +3,7 @@ import random
 from time import sleep
 
 from app import MUSIC
-from app.window import Window
+from app.window import Window, NB_SECONDS
 
 NB_MS = 100
 SECOND_IN_MS = 60000
@@ -52,7 +52,11 @@ class Music:
     def _check_session_change(self) -> None:
         while True:
             session = self._window.getSession()
-            if self._session != session:
+            if session < 0:
+                self._stop()
+                if session < -2:
+                    return
+            elif self._session != session:
                 self._session = session
                 break
             sleep(SLEEP_TIME)
@@ -62,8 +66,9 @@ class Music:
         self._check_session_change()
         self._load(session=self._session)
         self._play()
-        sleep(30)
+        sleep(NB_SECONDS)
         self._check_session_change()
         self._stop()
         self._load(session=self._session)
         self._play()
+        self._check_session_change()
