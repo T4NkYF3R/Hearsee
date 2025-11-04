@@ -1,8 +1,11 @@
 import tkinter
 from pathlib import Path
+from PIL import Image as Img
+from PIL import ImageTk as ImgTk
 
 from app import Data
-from app.window import Window, WINDOW_COLOR
+from app.window import Window, WINDOW_COLOR, NB_SESSION, NB_IMAGE_SESSION
+from app.assets import Image
 
 FONT = ("Arial", 20, "bold")
 PADX = 5
@@ -67,6 +70,8 @@ class StartFrame(BaseFrame):
         self._window.setSession(value=-self._window.getSession() + 1)
         self._label.configure(text="Session " + str(self._window.getSession() + 1))
         self._window.hide_frame("start")
+        imageFrame: ImageFrame = self._window.getFrame("image")
+        imageFrame.setNextImage()
         self._window.after(ms=AFTER_TIME, func=lambda: self._window.show_frame("image"))
         self._window.after(ms=AFTER_TIME, func=lambda: self._window.show_frame("response"))
 
@@ -84,6 +89,36 @@ class StartFrame(BaseFrame):
     def _create_session_label(self) -> None:
         self._label = self.create_label(text="Session " + str(self._window.getSession() + 1))
         self._label.grid(row=0, column=0)
+
+
+class ImageFrame(BaseFrame):
+    def __init__(self, window: Window) -> None:
+        super().__init__(window=window)
+        self._image = Image()
+        self._imagesLists = self._image.makeGroupeSession()
+        self._label: BaseFrame = self.create_label(text="Image undefined")
+        self._label.grid(row=0, column=0)
+        self._currentImage = None
+        self._photo = None
+        self._idx = 0
+
+        self.place(x=self._window.width, y=self._window.height)
+        self.update()
+        self._width = self.winfo_width()
+        self._height = self.winfo_height()
+        self.place_forget()
+        self.placeX = (self._window.width - self._width) / 2
+        self.placeY =  self._height + PADY
+
+    def getCurrentImage(self) -> str | None:
+        return self._currentImage
+
+    def setNextImage(self) -> None:
+        self._currentImage = self._imagesLists[self._idx]
+        self._idx += 1
+        image = Img.open(self._currentImage)
+        self._photo = ImgTk.PhotoImage(image=image)
+        self._label.configure(image=self._photo)
 
 
 class ResponseFrame(BaseFrame):
@@ -137,20 +172,27 @@ class ResponseFrame(BaseFrame):
     def _save_button_clicked(self) -> None:
         if self._value_selected is None: return
 
-        self._data.save_response(music=Path(self._window.getCurrentMusic()).name, score=self._value_selected, stimulus="Undefined")
+        musicName = Path(self._window.getCurrentMusic()).stem
+        imageFrame: ImageFrame = self._window.getFrame("image")
+        current_image = imageFrame.getCurrentImage()
+        imageName = Path(current_image if current_image is not None else "Undefined").stem
+        self._data.save_response(music=musicName, score=self._value_selected, stimulus=imageName)
         self._value_selected = None
         for i, button in enumerate(self._buttons):
             button.configure(background=COLOR[i], foreground="black")
         self._valueSaved += 1
 
-        if self._valueSaved % 4 == 0:
+        if self._valueSaved % NB_IMAGE_SESSION == 0:
             self._window.setSession(value=-self._window.getSession())
             self._window.hide_frame("image")
             self._window.hide_frame("response")
-            if -self._window.getSession() < 2:
+            if -self._window.getSession() < NB_SESSION:
                 self._window.show_frame("start")
             else:
                 self._window.show_frame("end")
+        else:
+            imageFrame: ImageFrame = self._window.getFrame("image")
+            imageFrame.setNextImage()
 
     def _create_save_button(self) -> None:
         button: tkinter.Button = self.create_button(
@@ -161,17 +203,6 @@ class ResponseFrame(BaseFrame):
             command=self._save_button_clicked
         )
         button.grid(row=2, column=4, columnspan=3, padx=PADX, pady=PADY, sticky="ew")
-
-
-class ImageFrame(BaseFrame):
-    def __init__(self, window: Window) -> None:
-        super().__init__(window=window)
-
-        self.place(x=self._window.width, y=self._window.height)
-        self.update()
-        self._width = self.winfo_width()
-        self._height = self.winfo_height()
-        self.place_forget()
 
 
 class EndFrame(BaseFrame):
@@ -209,7 +240,7 @@ class EndFrame(BaseFrame):
 
 FRAME_LIST = {
     "start": StartFrame,
-    "response": ResponseFrame,
     "image": ImageFrame,
+    "response": ResponseFrame,
     "end": EndFrame
 }

@@ -3,8 +3,9 @@ import random
 from time import sleep
 
 from app import MUSIC
-from app.window import Window, NB_SECONDS
+from app.window import Window, NB_SESSION
 
+NB_SECONDS = 1
 NB_MS = 100
 SECOND_IN_MS = 60000
 SLEEP_TIME = NB_MS * 1 / SECOND_IN_MS
@@ -27,15 +28,13 @@ class Music:
                     musics.append(music)
                 else:
                     print(f"[assets/music] Unsupported extension for music file '{music.name}'")
-        if len(musics) < 2:
-            raise RuntimeError(f"[assets/music] Not enought music to play ({len(music)}/2 required).")
+        if len(musics) < NB_SESSION:
+            raise RuntimeError(f"[assets/music] Not enought music to play ({len(music)}/{NB_SESSION} required).")
         random.shuffle(musics)
         return musics
 
-    def _load(self, session: int = 1 | 2) -> None:
-        match session:
-            case 1: self._currentTrack = self._musics[0]
-            case 2: self._currentTrack = self._musics[1]
+    def _load(self, session: int) -> None:
+        self._currentTrack = self._musics[session - 1]
         pygame.mixer.music.load(filename=self._currentTrack)
 
     def _play(self) -> None:
@@ -57,7 +56,7 @@ class Music:
             session = self._window.getSession()
             if session < 0:
                 self._stop()
-                if session < -2:
+                if session < -NB_SESSION:
                     return
             elif self._session != session:
                 self._session = session

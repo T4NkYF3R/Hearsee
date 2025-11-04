@@ -11,6 +11,9 @@ NB_MS = 100
 SECOND_IN_MS = 60000
 SLEEP_TIME = NB_MS * 1 / SECOND_IN_MS
 
+NB_SESSION = 2
+NB_IMAGE_SESSION = 5
+
 class Window(tkinter.Tk):
     def __init__(self, titleWindow: str) -> None:
         super().__init__()
@@ -34,7 +37,10 @@ class Window(tkinter.Tk):
     def _start_music_thread(self) -> None:
         self._musicThread.start()
 
-    def add_frame(self, name: str, frameClass):
+    def getFrame(self, name: str):
+        return self._frames[name]
+
+    def add_frame(self, name: str, frameClass) -> None:
         self._frames[name] = frameClass(self)
 
     def show_frame(self, name: str) -> None:
