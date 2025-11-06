@@ -1,4 +1,4 @@
-# 🧠 **Expérience cognitive:** Des images qui écoutent
+# 🧠 **Expérience psychologie cognitive:** Des images qui écoutent
 *Le lien entre induction musicales et perception de stimuli picturaux neutres*
 ---
 ![Python](https://img.shields.io/badge/Python-3.13.9-green?logo=python&style=plastic)
