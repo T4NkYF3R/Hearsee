@@ -25,6 +25,12 @@ jobs:
               run: |
                 ruff check . > ruff-report.log || true
 
+            - name: Upload Ruff report
+              uses: actions/upload-artifact@v3
+              with:
+                name: Ruff report
+                path: ruff-report.log
+
             - name: Analyze Ruff report
               run: |
                 python devops/scripts/ruff-report.py ruff-report.log
