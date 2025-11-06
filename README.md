@@ -115,10 +115,10 @@ Les données de l'expérience sont enregistrées au format `csv` dans dans le fi
 - **Nicolas Négron ·** [📧 Email](mailto:nicolas.negron@laposte.net) **·** [🌐 Github](https://www.github.com/T4NkYF3R)
 ### 🎓 **Equipe de recherche**
 - **Etudiantes en psychologie cognitive**  
-**X ·** [📧 Email](mailto:X@laposte.net)  
-**X ·** [📧 Email](mailto:X@laposte.net)  
-**X ·** [📧 Email](mailto:X@laposte.net)  
-**X ·** [📧 Email](mailto:X@laposte.net)  
+**Etudiante 1 ·** [📧 Email](mailto:etudiante1@gmail.com)  
+**Etudiante 2 ·** [📧 Email](mailto:etudiante2@gmail.com)  
+**Etudiante 3 ·** [📧 Email](mailto:etudiante3@gmail.com)  
+**Etudiante 4 ·** [📧 Email](mailto:etudiante4@gmail.com)  
 
 ---
 ## ⚖️ **Licence**
