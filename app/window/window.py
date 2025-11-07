@@ -1,25 +1,15 @@
 import tkinter
 from threading import Thread
 
-WINDOW_COLOR = "#F4EDDE"
-BUTTON_SIZE = 5
-COLOR = ["#FF0000", "#FF3300", "#FF6600", "#FF9900", "#FFCC00", "#FFFF00", "#CCFF00", "#99FF00", "#66FF00", "#33FF00", "#00FF00"]
-ACTIVE_BG_COLOR = "black"
-ACTIVE_FG_COLOR = "white"
+from app import BACKGROUND_COLOR
 
-NB_MS = 100
-SECOND_IN_MS = 60000
-SLEEP_TIME = NB_MS * 1 / SECOND_IN_MS
-
-NB_SESSION = 2
-NB_IMAGE_SESSION = 5
 
 class Window(tkinter.Tk):
     def __init__(self, titleWindow: str) -> None:
         super().__init__()
         self.title(string=titleWindow)
         self.attributes("-fullscreen", True)
-        self.configure(background=WINDOW_COLOR)
+        self.configure(background=BACKGROUND_COLOR)
         self.bind("<Escape>", func=self._close_window)
         self.width = 1920
         self.height = 1080

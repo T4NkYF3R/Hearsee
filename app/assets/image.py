@@ -3,6 +3,7 @@ from pathlib import Path
 
 from app import IMAGE
 
+
 class Image:
     def __init__(self) -> None:
         self._allowedExtensions = (".png", ".jpg", ".jpeg", ".gif", ".bpm")

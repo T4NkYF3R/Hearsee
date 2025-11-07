@@ -3,28 +3,14 @@ from pathlib import Path
 from PIL import Image as Img
 from PIL import ImageTk as ImgTk
 
-from app import Data
-from app.window import Window, WINDOW_COLOR, NB_SESSION, NB_IMAGE_SESSION
+from app import Data, BACKGROUND_COLOR, RESPONSE_BUTTON_COLOR, ACTIVE_BG_BUT_COLOR, ACTIVE_FG_BUT_COLOR, FONT, PADX, PADY, MAX_WIDTH_IMAGE, MAX_HEIGHT_IMAGE, NB_SESSION, NB_IMAGE_SESSION, AFTER_TIME
+from app.window import Window
 from app.assets import Image
-
-FONT = ("Arial", 20, "bold")
-PADX = 5
-PADY = 20
-COLOR = ["#FF0000", "#FF3300", "#FF6600", "#FF9900", "#FFCC00", "#FFFF00", "#CCFF00", "#99FF00", "#66FF00", "#33FF00", "#00FF00"]
-ACTIVE_BG_COLOR = "black"
-ACTIVE_FG_COLOR = "white"
-
-NB_SECONDS = 1
-TO_MS = 1000
-AFTER_TIME = NB_SECONDS * TO_MS
-
-MAX_WIDTH_IMAGE = 500
-MAX_HEIGHT_IMAGE = 500
 
 
 class BaseFrame(tkinter.Frame):
     def __init__(self, window: Window) -> None:
-        super().__init__(window, bg=WINDOW_COLOR)
+        super().__init__(window, bg=BACKGROUND_COLOR)
         self._window = window
         self._width = 0
         self._height = 0
@@ -50,7 +36,7 @@ class BaseFrame(tkinter.Frame):
             self,
             text=text,
             font=FONT,
-            background=WINDOW_COLOR
+            background=BACKGROUND_COLOR
         )
 
     def _getSize(self) -> None:
@@ -152,9 +138,9 @@ class ResponseFrame(BaseFrame):
         for i, button in enumerate(self._buttons):
             if i == value:
                 self._value_selected = i
-                button.configure(background=ACTIVE_BG_COLOR, foreground=ACTIVE_FG_COLOR)
+                button.configure(background=ACTIVE_BG_BUT_COLOR, foreground=ACTIVE_FG_BUT_COLOR)
             else:
-                button.configure(background=COLOR[i], foreground="black")
+                button.configure(background=RESPONSE_BUTTON_COLOR[i], foreground="black")
 
     def _create_response_buttons(self) -> list:
         buttons = []
@@ -163,7 +149,7 @@ class ResponseFrame(BaseFrame):
                 text=str(i),
                 width=5,
                 height=2,
-                color=COLOR[i],
+                color=RESPONSE_BUTTON_COLOR[i],
                 command=lambda value=i: self._response_button_clicked(value=value)
             )
             button.grid(row=1, column=i, padx=PADX)
@@ -187,7 +173,7 @@ class ResponseFrame(BaseFrame):
         self._data.save_response(music=musicName, score=self._value_selected, stimulus=imageName)
         self._value_selected = None
         for i, button in enumerate(self._buttons):
-            button.configure(background=COLOR[i], foreground="black")
+            button.configure(background=RESPONSE_BUTTON_COLOR[i], foreground="black")
         self._valueSaved += 1
 
         if self._valueSaved % NB_IMAGE_SESSION == 0:
