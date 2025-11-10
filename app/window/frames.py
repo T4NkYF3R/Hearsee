@@ -57,6 +57,7 @@ class GroupFrame(BaseFrame):
         self._buttons: list[tkinter.Button] = []
         self._buttonSelected = False
         self._create_group_button()
+        self._create_group_label()
         self._getSize()
         self.placeX = (self._window.width - self._width) / 2
         self.placeY = (self._window.height - self._height) / 2
@@ -98,6 +99,9 @@ class GroupFrame(BaseFrame):
         )
         button.grid(row=3, column=0, pady=PADY)
 
+    def _create_group_label(self) -> None:
+        label = self.create_label(text="Sélectionnez le groupe à évaluer")
+        label.grid(row=0, column=0)
 
 class StartFrame(BaseFrame):
     def __init__(self, window: Window) -> None:
