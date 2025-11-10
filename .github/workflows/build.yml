@@ -3,6 +3,7 @@ name: Build executables
 on:
     push:
         branches:
+            - main
             - build-executables
 
 jobs:
@@ -26,13 +27,13 @@ jobs:
 
             - name: Build Linux executable
               run: |
-                pyinstaller --onefile app/main.py --name app --add-data "assets:assets"
+                pyinstaller --onefile app/main.py --name Hearsee-linux --add-data "assets:assets"
 
             - name: Upload Linux executable
               uses: actions/upload-artifact@v4
               with:
                 name: app-linux
-                path: dist/app
+                path: dist/Hearsee-linux
 
     build-windows:
         name: Build Windows executable
@@ -54,10 +55,38 @@ jobs:
 
             - name: Build Windows executable
               run: |
-                pyinstaller --onefile app/main.py --name app --add-data "assets;assets"
+                pyinstaller --onefile app/main.py --name Hearsee --add-data "assets;assets"
 
             - name: Upload Windows executable
               uses: actions/upload-artifact@v4
               with:
                 name: app-windows
-                path: dist/app.exe
+                path: dist/Hearsee.exe
+
+    build-macos:
+        name: Build Macos executable
+        runs-on: windows-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Setup Python
+              uses: actions/setup-python@v5
+              with:
+                python-version: 3.12.10
+
+            - name: Install dependencies
+              run: |
+                pip install --upgrade pip
+                pip install -r requirements.txt
+                pip install pyinstaller
+
+            - name: Build Macos executable
+              run: |
+                pyinstaller --onefile --windowed app/main.py --name Hearsee --add-data "assets:assets"
+
+            - name: Upload Macos executable
+              uses: actions/upload-artifact@v4
+              with:
+                name: app-macos
+                path: dist/Hearsee.app
