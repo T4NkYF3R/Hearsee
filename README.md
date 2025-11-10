@@ -94,7 +94,7 @@ Aucune installation Python requise — télécharge simplement l'exécutable cor
 | 🐧 **Linux** | `Hearsee` | Double-clique ou `./Hearsee` dans un terminal |
 | 🍎 **macOS** | `Hearsee.app` | Double-clique sur l'application |
 
-💡 *Les exécutables se trouvent dans le dossier `/bin` du projet GitHub. Téléchargez la dernière [Release](https://github.com/T4NkYF3R/Des-images-qui-ecoutent/releases) pour obtenir la version la plus récente de l'application.*
+💡 *Les exécutables se trouvent dans le dossier `/bin` du projet GitHub. Téléchargez la dernière [Release](https://github.com/T4NkYF3R/Hearsee/releases) pour obtenir la version la plus récente de l'application.*
 
 ---
 ## 🎓 **L'experience**
