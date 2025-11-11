@@ -36,9 +36,8 @@ class Image:
             if len(pair) < 2:
                 print(f"[assets/image] '{name}' has no pair.")
                 continue
-            random.shuffle(pair)
-            session1.append(pair[0] if pair[0].endswith("_1") else pair[1])
-            session2.append(pair[1] if pair[1].endswith("_2") else pair[0])
+            session1.append(pair[0] if Path(pair[0]).stem.endswith("_1") else pair[1])
+            session2.append(pair[1] if Path(pair[1]).stem.endswith("_2") else pair[0])
         random.shuffle(session1)
         random.shuffle(session2)
         globalList = session1 + session2
