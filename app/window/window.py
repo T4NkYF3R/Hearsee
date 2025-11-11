@@ -1,31 +1,22 @@
 import tkinter
 from threading import Thread
 
-WINDOW_COLOR = "#F4EDDE"
-BUTTON_SIZE = 5
-COLOR = ["#FF0000", "#FF3300", "#FF6600", "#FF9900", "#FFCC00", "#FFFF00", "#CCFF00", "#99FF00", "#66FF00", "#33FF00", "#00FF00"]
-ACTIVE_BG_COLOR = "black"
-ACTIVE_FG_COLOR = "white"
+from app import BACKGROUND_COLOR
 
-NB_MS = 100
-SECOND_IN_MS = 60000
-SLEEP_TIME = NB_MS * 1 / SECOND_IN_MS
-
-NB_SESSION = 2
-NB_IMAGE_SESSION = 5
 
 class Window(tkinter.Tk):
     def __init__(self, titleWindow: str) -> None:
         super().__init__()
         self.title(string=titleWindow)
         self.attributes("-fullscreen", True)
-        self.configure(background=WINDOW_COLOR)
+        self.configure(background=BACKGROUND_COLOR)
         self.bind("<Escape>", func=self._close_window)
         self.width = 1920
         self.height = 1080
 
         self._frames = {}
         self._session = 0
+        self._control = False
 
         from app.assets import Music
         self._musicPlayer = Music(self)
@@ -63,11 +54,18 @@ class Window(tkinter.Tk):
     def getCurrentMusic(self) -> str:
         return self._musicPlayer.getMusicLoaded()
 
+    def setControle(self, status: bool) -> None:
+        self._control = status
+
+    def getControle(self) -> bool:
+        return bool(self._control)
+
     def stop(self) -> None:
-        self._musicPlayer.stop()
+        if self._control is False:
+            self._musicPlayer.stop()
         self._close_window()
 
     def run(self) -> None:
         self._start_music_thread()
-        self.show_frame("start")
+        self.show_frame("group")
         self.mainloop()

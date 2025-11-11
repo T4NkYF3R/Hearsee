@@ -1,30 +1,17 @@
 import tkinter
 from pathlib import Path
 from PIL import Image as Img
+from PIL import ImageOps as ImgOps
 from PIL import ImageTk as ImgTk
 
-from app import Data
-from app.window import Window, WINDOW_COLOR, NB_SESSION, NB_IMAGE_SESSION
+from app import Data, BACKGROUND_COLOR, RESPONSE_BUTTON_COLOR, ACTIVE_BG_BUT_COLOR, ACTIVE_FG_BUT_COLOR, FONT, PADX, PADY, MAX_WIDTH_IMAGE, MAX_HEIGHT_IMAGE, NB_SESSION, NB_IMAGE_SESSION, AFTER_TIME
+from app.window import Window
 from app.assets import Image
-
-FONT = ("Arial", 20, "bold")
-PADX = 5
-PADY = 20
-COLOR = ["#FF0000", "#FF3300", "#FF6600", "#FF9900", "#FFCC00", "#FFFF00", "#CCFF00", "#99FF00", "#66FF00", "#33FF00", "#00FF00"]
-ACTIVE_BG_COLOR = "black"
-ACTIVE_FG_COLOR = "white"
-
-NB_SECONDS = 1
-TO_MS = 1000
-AFTER_TIME = NB_SECONDS * TO_MS
-
-MAX_WIDTH_IMAGE = 500
-MAX_HEIGHT_IMAGE = 500
 
 
 class BaseFrame(tkinter.Frame):
     def __init__(self, window: Window) -> None:
-        super().__init__(window, bg=WINDOW_COLOR)
+        super().__init__(window, bg=BACKGROUND_COLOR)
         self._window = window
         self._width = 0
         self._height = 0
@@ -42,6 +29,9 @@ class BaseFrame(tkinter.Frame):
                 foreground="black",
                 activebackground="black",
                 activeforeground="white",
+                bd=0,
+                highlightthickness=2,
+                highlightbackground="black",
                 command=command
             )
 
@@ -50,7 +40,7 @@ class BaseFrame(tkinter.Frame):
             self,
             text=text,
             font=FONT,
-            background=WINDOW_COLOR
+            background=BACKGROUND_COLOR
         )
 
     def _getSize(self) -> None:
@@ -64,6 +54,58 @@ class BaseFrame(tkinter.Frame):
     def getSize(self) -> tuple[int, int]:
         return (self._width, self._height)
 
+
+class GroupFrame(BaseFrame):
+    def __init__(self, window: Window) -> None:
+        super().__init__(window)
+        self._buttons: list[tkinter.Button] = []
+        self._buttonSelected = False
+        self._create_group_button()
+        self._create_group_label()
+        self._getSize()
+        self.placeX = (self._window.width - self._width) / 2
+        self.placeY = (self._window.height - self._height) / 2
+
+    def _setGroupe(self, groupe: bool) -> None:
+        self._buttonSelected = True
+        for i, button in enumerate(self._buttons):
+            if i == int(groupe):
+                button.configure(background=ACTIVE_BG_BUT_COLOR, foreground=ACTIVE_FG_BUT_COLOR)
+            else:
+                button.configure(background="white", foreground="black")
+        self._window.setControle(status=groupe)
+
+    def _validate(self) -> None:
+        if self._buttonSelected is not True:
+            return
+        self._window.hide_frame("group")
+        self._window.show_frame("start")
+
+    def _create_group_button(self) -> None:
+        groupes = ["Expérimental", "Contrôle"]
+        for i in range(2):
+            button = self.create_button(
+                text=groupes[i],
+                color="white",
+                width=20,
+                height=None,
+                command=lambda groupe=i:self._setGroupe(groupe=groupe)
+            )
+            button.grid(row=i + 1, column=0, pady=2)
+            self._buttons.append(button)
+
+        button = self.create_button(
+            text="Valider",
+            color="white",
+            width=None,
+            height=None,
+            command=self._validate
+        )
+        button.grid(row=3, column=0, pady=PADY)
+
+    def _create_group_label(self) -> None:
+        label = self.create_label(text="Sélectionnez le groupe à évaluer")
+        label.grid(row=0, column=0)
 
 class StartFrame(BaseFrame):
     def __init__(self, window: Window) -> None:
@@ -81,8 +123,9 @@ class StartFrame(BaseFrame):
         self._window.hide_frame("start")
         imageFrame: ImageFrame = self._window.getFrame("image")
         imageFrame.setNextImage()
-        self._window.after(ms=AFTER_TIME, func=lambda: self._window.show_frame("image"))
-        self._window.after(ms=AFTER_TIME, func=lambda: self._window.show_frame("response"))
+        time = AFTER_TIME if self._window.getControle() is False else 0
+        self._window.after(ms=time, func=lambda: self._window.show_frame("image"))
+        self._window.after(ms=time, func=lambda: self._window.show_frame("response"))
 
     def _create_start_sutton(self) -> None:
         button = self.create_button(
@@ -118,6 +161,7 @@ class ImageFrame(BaseFrame):
         self._currentImage = self._imagesLists[self._idx]
         self._idx += 1
         image = Img.open(self._currentImage)
+        image = ImgOps.exif_transpose(image=image)
         width , height = image.size
         ratio = min(MAX_WIDTH_IMAGE / width, MAX_HEIGHT_IMAGE / height)
         width = int(width * ratio)
@@ -152,9 +196,9 @@ class ResponseFrame(BaseFrame):
         for i, button in enumerate(self._buttons):
             if i == value:
                 self._value_selected = i
-                button.configure(background=ACTIVE_BG_COLOR, foreground=ACTIVE_FG_COLOR)
+                button.configure(background=ACTIVE_BG_BUT_COLOR, foreground=ACTIVE_FG_BUT_COLOR)
             else:
-                button.configure(background=COLOR[i], foreground="black")
+                button.configure(background=RESPONSE_BUTTON_COLOR[i], foreground="black")
 
     def _create_response_buttons(self) -> list:
         buttons = []
@@ -163,7 +207,7 @@ class ResponseFrame(BaseFrame):
                 text=str(i),
                 width=5,
                 height=2,
-                color=COLOR[i],
+                color=RESPONSE_BUTTON_COLOR[i],
                 command=lambda value=i: self._response_button_clicked(value=value)
             )
             button.grid(row=1, column=i, padx=PADX)
@@ -177,16 +221,17 @@ class ResponseFrame(BaseFrame):
             label.grid(row=0, column=i*5)
 
     def _save_button_clicked(self) -> None:
-        if self._value_selected is None: return
+        if self._value_selected is None:
+            return
 
-        musicName = Path(self._window.getCurrentMusic()).stem
+        musicName = Path(self._window.getCurrentMusic()).stem if self._window.getControle() is False else "No music"
         imageFrame: ImageFrame = self._window.getFrame("image")
         current_image = imageFrame.getCurrentImage()
         imageName = Path(current_image if current_image is not None else "Undefined").stem
         self._data.save_response(music=musicName, score=self._value_selected, stimulus=imageName)
         self._value_selected = None
         for i, button in enumerate(self._buttons):
-            button.configure(background=COLOR[i], foreground="black")
+            button.configure(background=RESPONSE_BUTTON_COLOR[i], foreground="black")
         self._valueSaved += 1
 
         if self._valueSaved % NB_IMAGE_SESSION == 0:
@@ -242,6 +287,7 @@ class EndFrame(BaseFrame):
 
 
 FRAME_LIST = {
+    "group": GroupFrame,
     "start": StartFrame,
     "image": ImageFrame,
     "response": ResponseFrame,

@@ -1,9 +1,7 @@
 import csv
 
-from app import DATA
+from app import DATA, CSV_PATH
 
-CSV_FILE = "reponses.csv"
-CSV_PATH = DATA / CSV_FILE
 
 class Data:
     def __init__(self) -> None:

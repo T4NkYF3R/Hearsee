@@ -1,2 +1,4 @@
-from .window import Window, WINDOW_COLOR, NB_SESSION, NB_IMAGE_SESSION
-from .frames import BaseFrame, ResponseFrame, FRAME_LIST
+from .window import Window as Window
+from .frames import BaseFrame as BaseFrame
+from .frames import ResponseFrame as ResponseFrame
+from .frames import FRAME_LIST as FRAME_LIST

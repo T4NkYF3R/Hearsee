@@ -1,11 +1,11 @@
-# 🧠 **Expérience psychologie cognitive:** Des images qui écoutent
-*Le lien entre induction musicales et perception de stimuli picturaux neutres*
+# 🧠 **Hearsee**
+*Des images qui écoutent: Le lien entre induction musicales et perception de stimuli picturaux neutres*
 ---
-![Python](https://img.shields.io/badge/Python-3.13.9-green?logo=python&style=plastic)
+![Python](https://img.shields.io/badge/Python-3.12.12-green?logo=python&style=plastic)
 ![Tkinter](https://img.shields.io/badge/Tkinter-8.6-orange?style=plastic)
 ![Pygame](https://img.shields.io/badge/Pygame-2.6.1-blue?style=plastic)
 ![Pillow](https://img.shields.io/badge/Pillow-12.0.0-purple?style=plastic)  
-![Release](https://img.shields.io/github/v/release/T4NkYF3R/Des-images-qui-ecoutent?include_prereleases&display_name=tag&logo=github&color=red&style=plastic)
+![Release](https://img.shields.io/github/v/release/T4NkYF3R/Hearsee?include_prereleases&display_name=tag&logo=github&color=red&style=plastic)
 ![Contact](https://img.shields.io/badge/Github-@T4NkYF3R-black?logo=github&logoColor=white&style=plastic)
 ![Email](https://img.shields.io/badge/Email-contact-yellow?logo=gmail&logoColor=white&style=plastic)
 
@@ -16,79 +16,101 @@ Il vise à explorer **le lien entre induction musicale et perception visuelle** 
 ---
 ## 🧱 **Architecture projet**
 ```bash
-.
-
-├── /app    # Code source
-│   ├── /assets
-│   ├── /window
+Hearsee/
+│
+├── .github/            # Configuration GitHub
+│   └── workflows/
+│
+├── app/                # Code source de l'application
+│   ├── assets/
+│   ├── window/
 │   ├── __init__.py
 │   ├── config.py
 │   ├── data.py
 │   └── main.py
 │
-├── /assets # Assets du projet
-│   ├── /image
-│   └── /music
+├── assets/             # Ressources pour l'expérience
+│   ├── image/
+│   └── music/
 │
-├── /data   # Sauvegarde des résultats
+├── bin/                # Exécutable de l'application
+│   ├── Linux/
+│   ├── macOS/
+│   └── Windows/
+│
+├── data/               # Données enregistrées pendant l'expérience
 │   └── reponses.csv
 │
+├── devops/             # Scripts et configuration DevOps
+│   └── scripts/
+│
 ├── README.md
-└── requirement.txt
+└── requirements.txt
 ```
 
 ---
 ## ⚙️ **Installation**
-### 1️⃣ **Créer un environnement virtuel**
+### 🧑‍💻 **Pour les développeurs**
+#### 0️⃣ **Cloner le dépôt**
+```bash
+git clone https://github.com/T4NkYF3R/Hearsee
+cd Hearsee
+```
+#### 1️⃣ **Créer un environnement virtuel**
 - **Windows :**
 ```bash
-python3.13 -m venv .venv
+python3.12 -m venv .venv
 .venv\Scripts\activate
 ```
 - **Linux *(Fedora)* :**
 ```bash
-python3.13 -m venv .venv
+python3.12 -m venv .venv
 source .venv/bin/activate
 ```
-### 2️⃣ **Installer les dépendances**
+#### 2️⃣ **Installer les dépendances**
 ```bash
+pip install --upgrade pip
 pip install -r requirements.txt
 ```
 📦 `requirements.txt` contient les bibliotèques nécessaires (`pygame`, etc.)  
-🧩 `Tkinter` n'est pas inclus car il fait partie de Python standard.
-### 3️⃣ **Vérifier que `Tkinter` est installé**
+🧩 `Tkinter` fait partie de Python standard, mais peut nécessiter une installation manuelle sur Linux.
+#### 3️⃣ **Vérifier que `Tkinter` est installé**
 - **Windows :** `Tkinter` est généralement inclus avec Python
 - **Linux *(Fedora)* :**
 ```bash
 sudo dnf install python3-tkinter
 ```
-### 4️⃣ **Lancer l'application**
+#### 4️⃣ **Lancer l'application**
 ```bash
 python -m app.main
 ```
 
-## 🎓 **L'experience**
-- L'expérience se déroule en **2 sessions** 🧩.
-- Une pause est prévu entre chaque session ☕.
-### 🎶 Déroulement d'une session
-- La **musique** est joué pendant **tout la durée de la session** 🎧.
-- La session commence par **30 secondes** sans **stimuli visuels** 🕐 afin de favoriser la **concentration sur la musique** 🎵.
-- Vous devrez ensuite **enregistrer votre niveau de ressenti** pour les **4 images** présentées 🖼️💭.
+---
+### 👥 **Pour les utilisateurs**
+Aucune installation Python requise — télécharge simplement l'exécutable correspondant à ton système d'exploitation :
+| **Système** | **Fichier exécutable** | **Lancement** |
+|-|-|-|
+| 🪟 **Windows** | `Hearsee.exe` | Double-clique sur le fichier |
+| 🐧 **Linux** | `Hearsee` | Double-clique ou `./Hearsee` dans un terminal |
+| 🍎 **macOS** | `Hearsee.app` | Double-clique sur l'application |
+
+💡 *Les exécutables se trouvent dans le dossier `/bin` du projet GitHub. Téléchargez la dernière [Release](https://github.com/T4NkYF3R/Hearsee/releases) pour obtenir la version la plus récente de l'application.*
 
 ---
-## 📂 **Assets**
+## 📂 **Assets *(pour les développeurs)***
 ### 🖼️ **Images**
-`./assets/image`  
+**Chemin** : `./assets/image`  
 Les images fonctionnent par **pairs** 🔗.  
-➡️ Vous aurez besoin de **4 pairs** d'images.  
+➡️ Vous aurez besoin de **10 pairs** d'images.  
 #### 🗂️ **Nomenclature attendue**  
 Les fichiers doivent suivre le format:
 ```css
 nom_1.[png|jpeg|jpg|gif|bmp]
 nom_2.[png|jpeg|jpg|gif|bmp]
 ```
+💡 Exemple : `image_1.png` et `image_2.png`
 ### 🎵 **Musiques**
-`./assets/music`  
+**Chemin** : `./assets/music`  
 Il vous faut **2 musiques** 🎶  
 Assurez-vous qu'elles soient prêtes avant de lancer l'expérience 🧠.
 #### 🗂️ **Format acceptés**
@@ -99,6 +121,15 @@ Les fichiers doivent êtres d'un des formats suivant:
 .ogg
 .flac
 ```
+
+---
+## 🎓 **L'experience**
+- L'expérience se déroule en **2 sessions** 🧩.
+- Une pause est prévu entre chaque session ☕.
+### 🎶 Déroulement d'une session
+- La **musique** est joué pendant **tout la durée de la session** 🎧.
+- La session commence par **30 secondes** sans **stimuli visuels** 🕐 afin de favoriser la **concentration sur la musique** 🎵.
+- Vous devrez ensuite **enregistrer votre niveau de ressenti** pour les **4 images** présentées 🖼️💭.
 
 ---
 ## 📊 **Récupérations des données**
@@ -114,11 +145,12 @@ Les données de l'expérience sont enregistrées au format `csv` dans dans le fi
 ### 👨‍💻 **Equipe de développement**
 - **Nicolas Négron ·** [📧 Email](mailto:nicolas.negron@laposte.net) **·** [🌐 Github](https://www.github.com/T4NkYF3R)
 ### 🎓 **Equipe de recherche**
-- **Etudiantes en psychologie cognitive**  
-**Etudiante 1 ·** [📧 Email](mailto:etudiante1@gmail.com)  
-**Etudiante 2 ·** [📧 Email](mailto:etudiante2@gmail.com)  
-**Etudiante 3 ·** [📧 Email](mailto:etudiante3@gmail.com)  
-**Etudiante 4 ·** [📧 Email](mailto:etudiante4@gmail.com)  
+- | **Etudiantes en psychologie cognitive** |                                                       |
+  |-----------------------------------------|-------------------------------------------------------|
+  | **Julia Raevesteyn**                    | **·** [📧 Email](mailto:raevesteyn.gestion@gmail.com) |
+  | **Marie De Champeville**                | **·** [📧 Email](mailto:mdechampevillepro@gmail.com)  |
+  | **Cléo Porta**                          | **·** [📧 Email](mailto:cleoporta2004@gmail.com)      |
+  | **Cécille Queyroy**                     | **·** [📧 Email](mailto:queyroycecile.lhm@gmail.com)  |
 
 ---
 ## ⚖️ **Licence**
@@ -128,4 +160,4 @@ Les données de l'expérience sont enregistrées au format `csv` dans dans le fi
 Toute utilisation, modification ou diffusion nécessite une autorisation préalable.
 
 ---
-📦 Pour plus de détails sur l'évolution du projet, consultez la section **[Releases](https://github.com/T4NkYF3R/Des-images-qui-ecoutent/releases)** du dépôt.
+📦 Pour plus de détails sur l'évolution du projet, consultez la section **[Releases](https://github.com/T4NkYF3R/Hearsee/releases)** du dépôt.

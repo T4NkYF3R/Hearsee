@@ -2,13 +2,8 @@ import pygame
 import random
 from time import sleep
 
-from app import MUSIC
-from app.window import Window, NB_SESSION
-
-NB_SECONDS = 1
-NB_MS = 100
-SECOND_IN_MS = 60000
-SLEEP_TIME = NB_MS * 1 / SECOND_IN_MS
+from app import MUSIC, NB_SESSION, SLEEP_TIME, NB_SECONDS
+from app.window import Window
 
 class Music:
     def __init__(self, window: Window) -> None:
@@ -66,6 +61,9 @@ class Music:
     def run(self) -> None:
         self._session = self._window.getSession()
         self._check_session_change()
+        if self._window.getControle() is True:
+            self.stop()
+            return
         self._load(session=self._session)
         self._play()
         sleep(NB_SECONDS)
