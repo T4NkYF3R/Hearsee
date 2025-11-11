@@ -1,0 +1,7 @@
+# End of lines format
+* text=auto eol=lf
+
+# Binary files
+/bin/Linux/*    binary
+/bin/macOS/*    binary
+/bin/Windows/*  binary
