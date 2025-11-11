@@ -1,6 +1,7 @@
 import tkinter
 from pathlib import Path
 from PIL import Image as Img
+from PIL import ImageOps as ImgOps
 from PIL import ImageTk as ImgTk
 
 from app import Data, BACKGROUND_COLOR, RESPONSE_BUTTON_COLOR, ACTIVE_BG_BUT_COLOR, ACTIVE_FG_BUT_COLOR, FONT, PADX, PADY, MAX_WIDTH_IMAGE, MAX_HEIGHT_IMAGE, NB_SESSION, NB_IMAGE_SESSION, AFTER_TIME
@@ -160,6 +161,7 @@ class ImageFrame(BaseFrame):
         self._currentImage = self._imagesLists[self._idx]
         self._idx += 1
         image = Img.open(self._currentImage)
+        image = ImgOps.exif_transpose(image=image)
         width , height = image.size
         ratio = min(MAX_WIDTH_IMAGE / width, MAX_HEIGHT_IMAGE / height)
         width = int(width * ratio)
