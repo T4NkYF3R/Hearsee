@@ -97,28 +97,20 @@ Aucune installation Python requise — télécharge simplement l'exécutable cor
 💡 *Les exécutables se trouvent dans le dossier `/bin` du projet GitHub. Téléchargez la dernière [Release](https://github.com/T4NkYF3R/Hearsee/releases) pour obtenir la version la plus récente de l'application.*
 
 ---
-## 🎓 **L'experience**
-- L'expérience se déroule en **2 sessions** 🧩.
-- Une pause est prévu entre chaque session ☕.
-### 🎶 Déroulement d'une session
-- La **musique** est joué pendant **tout la durée de la session** 🎧.
-- La session commence par **30 secondes** sans **stimuli visuels** 🕐 afin de favoriser la **concentration sur la musique** 🎵.
-- Vous devrez ensuite **enregistrer votre niveau de ressenti** pour les **4 images** présentées 🖼️💭.
-
----
-## 📂 **Assets**
+## 📂 **Assets *(pour les développeurs)***
 ### 🖼️ **Images**
-`./assets/image`  
+**Chemin** : `./assets/image`  
 Les images fonctionnent par **pairs** 🔗.  
-➡️ Vous aurez besoin de **4 pairs** d'images.  
+➡️ Vous aurez besoin de **10 pairs** d'images.  
 #### 🗂️ **Nomenclature attendue**  
 Les fichiers doivent suivre le format:
 ```css
 nom_1.[png|jpeg|jpg|gif|bmp]
 nom_2.[png|jpeg|jpg|gif|bmp]
 ```
+💡 Exemple : `image_1.png` et `image_2.png`
 ### 🎵 **Musiques**
-`./assets/music`  
+**Chemin** : `./assets/music`  
 Il vous faut **2 musiques** 🎶  
 Assurez-vous qu'elles soient prêtes avant de lancer l'expérience 🧠.
 #### 🗂️ **Format acceptés**
@@ -129,6 +121,15 @@ Les fichiers doivent êtres d'un des formats suivant:
 .ogg
 .flac
 ```
+
+---
+## 🎓 **L'experience**
+- L'expérience se déroule en **2 sessions** 🧩.
+- Une pause est prévu entre chaque session ☕.
+### 🎶 Déroulement d'une session
+- La **musique** est joué pendant **tout la durée de la session** 🎧.
+- La session commence par **30 secondes** sans **stimuli visuels** 🕐 afin de favoriser la **concentration sur la musique** 🎵.
+- Vous devrez ensuite **enregistrer votre niveau de ressenti** pour les **4 images** présentées 🖼️💭.
 
 ---
 ## 📊 **Récupérations des données**
