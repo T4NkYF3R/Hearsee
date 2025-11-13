@@ -55,32 +55,40 @@ git clone https://github.com/T4NkYF3R/Hearsee
 cd Hearsee
 ```
 - **Pour les utilisateurs** :  
-Téléchargez la dernière version [release](https://github.com/T4NkYF3R/Hearsee/releases) et rentrez dans le dossier.
-### 2️⃣ **Créer un environnement virtuel**
-- **Windows :**
+  1. Téléchargez la dernière version [release](https://github.com/T4NkYF3R/Hearsee/releases).
+  2. Décompressez le `.zip`.
+  3. Ouvrez le dossier.
+  4. Dans la **barre indiquant le chemin d'accès au dossier**, **tapez la commande suivante** et **appuyez sur entrée**. Un invité de commande va s'ouvrir vous permettant d'éxécuter les commandes a venir.
+  ```bash
+  cmd
+  ```
+### 2️⃣ **Créer l'environnement virtuel**
 ```bash
 python3.12 -m venv .venv
+```
+### 3️⃣ **Activer l'environnement virtuel**
+- **Windows :**
+```bash
 .venv\Scripts\activate
 ```
 - **Linux / macOS :**
 ```bash
-python3.12 -m venv .venv
 source .venv/bin/activate
 ```
-### 3️⃣ **Installer les dépendances**
+### 4️⃣ **Installer les dépendances**
 ```bash
-pip install --upgrade pip
+python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 📦 `requirements.txt` contient les bibliotèques nécessaires (`pygame`, etc.)  
 🧩 `Tkinter` fait partie de Python standard, mais peut nécessiter une installation manuelle sur Linux.
-### 4️⃣ **Vérifier que `Tkinter` est installé**
+### 5️⃣ **Vérifier que `Tkinter` est installé**
 - **Windows :** `Tkinter` est généralement inclus avec Python
 - **Linux :**
 ```bash
 sudo dnf install python3-tkinter
 ```
-### 5️⃣ **Lancer l'application**
+### 6️⃣ **Lancer l'application**
 ```bash
 python -m app.main
 ```
