@@ -125,7 +125,7 @@ Les fichiers doivent êtres d'un des formats suivant:
 - Une pause est prévu entre chaque session ☕.
 ### 🎶 Déroulement d'une session
 - La **musique** est joué pendant **tout la durée de la session** 🎧.
-- La session commence par **30 secondes** sans **stimuli visuels** 🕐 afin de favoriser la **concentration sur la musique** 🎵.
+- La session commence par **60 secondes** sans **stimuli visuels** 🕐 afin de favoriser la **concentration sur la musique** 🎵.
 - Vous devrez ensuite **enregistrer votre niveau de ressenti** pour les **10 images** présentées 🖼️💭.
 
 ---
@@ -147,7 +147,7 @@ Les données de l'expérience sont enregistrées au format `csv` dans dans le fi
   | **Julia Raevesteyn**                    | **·** [📧 Email](mailto:raevesteyn.gestion@gmail.com) |
   | **Marie De Champeville**                | **·** [📧 Email](mailto:mdechampevillepro@gmail.com)  |
   | **Cléo Porta**                          | **·** [📧 Email](mailto:cleoporta2004@gmail.com)      |
-  | **Cécile Queyroy**                     | **·** [📧 Email](mailto:queyroycecile.lhm@gmail.com)  |
+  | **Cécile Queyroy**                      | **·** [📧 Email](mailto:queyroycecile.lhm@gmail.com)  |
 
 ---
 ## ⚖️ **Licence**
